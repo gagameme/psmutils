@@ -35,15 +35,20 @@ static char *Usage =
 "           fileは指定していても無視する\n"
 "\n"
 "  -I       メモリの情報を表示する\n"
-"  -N num   ブロック1からnum個のブロックを0埋めし、使用済みにする\n"
+"  -C num   ブロック1からnum個のブロックを0埋めし、使用済みにする\n"
 "           num==0の場合は何も変更しない\n"
-"  -W mcb   ブロック1にmcbファイルの内容を書き込む\n"
+"  -U mcb   ブロック1にmcbファイルの内容を書き込む\n"
 "           続きがあれば次のブロックへも書き込む\n"
+"  -D       ブロック1の内容をmcb形式で出力する\n"
+"           他ブロックに続きがあれば取り出す\n"
 "  -S num   ブロック1とブロックnumを入れ替える\n"
 "  -T title ブロック1のデータ名を変更する\n"
-"  -D       ブロック1を削除する(ヘッダのみ)\n"
+"  -N       ブロック1のデータ名を表示する\n"
+"  -E       ブロック1を削除する(ヘッダのみ)\n"
 "           他ブロックに続きがあれば削除する\n"
-"  -E       ブロック1の内容をmcb形式で出力する\n"
+"  -W raw   ブロック1にrawファイルの内容を書き込む\n"
+"           続きがあれば次のブロックへも書き込む\n"
+"  -R       ブロック1の内容をそのまま出力する\n"
 "           他ブロックに続きがあれば取り出す\n"
 "\n";
 
@@ -89,7 +94,7 @@ static void get_option(struct Options_ *opt, int argc, char *argv[])
 	while(1) {
 		int c;
 
-		while((c = getopt(argc, argv, "ho:b:fIN:W:S:T:DE")) != -1) {
+		while((c = getopt(argc, argv, "ho:b:fIC:DU:S:T:NERW:")) != -1) {
 			int act = ACT_NONE;
 			switch(c) {
 			case 'h':
@@ -108,27 +113,37 @@ static void get_option(struct Options_ *opt, int argc, char *argv[])
 			case 'I':
 				act = ACT_PRINT;
 				break;
-			case 'N':
-				act = ACT_NEWDATA;
+			case 'C':
+				act = ACT_CREATE;
 				opt->dest_index = atoi(optarg);
 				break;
-			case 'W':
-				act = ACT_WRITE;
+			case 'U':
+				act = ACT_UPLOAD;
 				opt->infname = optarg;
+				break;
+			case 'D':
+				act = ACT_DOWNLOAD;
 				break;
 			case 'T':
 				act = ACT_TITLE;
 				opt->title = optarg;
 				break;
+			case 'N':
+				act = ACT_NAME;
+				break;
 			case 'S':
 				act = ACT_SWAP;
 				opt->dest_index = atoi(optarg);
 				break;
-			case 'D':
-				act = ACT_DELETE;
-				break;
 			case 'E':
-				act = ACT_EXTRACT;
+				act = ACT_ERASE;
+				break;
+			case 'R':
+				act = ACT_READ;
+				break;
+			case 'W':
+				act =ACT_WRITE;
+				opt->infname = optarg;
 				break;
 			default:
 				help();

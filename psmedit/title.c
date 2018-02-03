@@ -23,3 +23,18 @@ void psmem_title(struct Mem_ *output, void *base_mem, int block_n, char *name)
 }
 
 
+/*
+ * データの名前を出力する
+ */
+void psmem_name(void *base_mem, int block_n)
+{
+	struct Blkinfo bi;
+
+	if(block_n <= 0 || NUM_BLOCK <= block_n)
+		error_exit("block number");
+
+	mc_read_blockinfo(base_mem, block_n, &bi);
+
+	printf("%s", bi.name);
+}
+

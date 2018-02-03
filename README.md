@@ -37,9 +37,9 @@ PS1メモリーカードのデータをブロック単位で編集する
 * file.psの概要を表示
   * `./psmedit -I file.ps`
 * file.psのブロック2へsave.mcbの内容を書き込む
-  * `./psmedit -b2 -W save.mcb file.ps`
+  * `./psmedit -b2 -U save.mcb file.ps`
 * file.psのブロック3の内容をblock3.mcbへ出力
-  * `./psmedit -b3 -E -o block3.mcb file.ps`
+  * `./psmedit -b3 -D -o block3.mcb file.ps`
 
 
 ---

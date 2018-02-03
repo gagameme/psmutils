@@ -13,7 +13,7 @@ DEST := psmedit
 SRC  := main.c \
         operate.c \
         mc.c mcb.c \
-        write.c print.c extract.c swap.c title.c delete.c newdata.c
+        print.c swap.c title.c delete.c newdata.c raw.c
 
 OBJS := $(patsubst %.c,%.o,$(SRC))
 

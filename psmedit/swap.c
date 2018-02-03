@@ -38,7 +38,7 @@ void psmem_swap(struct Mem_ *output, void *base_mem, int src_block, int dst_bloc
  */
 static void swap_frame(void *mem, int src_block, int dst_block)
 {
-	unsigned char tmp_frame[SIZE_FRAME] = {0};
+	static unsigned char tmp_frame[SIZE_FRAME] = {0};
 	unsigned char *src_frame = mem + OFFSET_BLOCK(0) + OFFSET_FRAME(src_block);
 	unsigned char *dst_frame = mem + OFFSET_BLOCK(0) + OFFSET_FRAME(dst_block);
 

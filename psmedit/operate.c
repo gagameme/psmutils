@@ -18,8 +18,8 @@ static void write_mem(void *mem, int outsize, const char *outfname);
  */
 int operate(struct Options_ *opt)
 {
-	unsigned char base_mem[SIZE_MEM] = {0};
-	unsigned char out_mem[SIZE_MEM] = {0};
+	static unsigned char base_mem[SIZE_MEM] = {0};
+	static unsigned char out_mem[SIZE_MEM] = {0};
 	struct Mem_ output;
 
 	output.mem = out_mem;
@@ -35,11 +35,20 @@ int operate(struct Options_ *opt)
 		mc_read_basefile(opt->basefname, base_mem);
 
 	switch(opt->action) {
-	case ACT_NEWDATA:
+	case ACT_CREATE:
 		psmem_newdata(&output, base_mem, opt->block_index, opt->dest_index);
 		break;
+	case ACT_UPLOAD:
+		psmem_mcb_write(&output, base_mem, opt->block_index, opt->infname);
+		break;
+	case ACT_DOWNLOAD:
+		psmem_mcb_extract(&output, base_mem, opt->block_index);
+		break;
 	case ACT_WRITE:
-		psmem_write(&output, base_mem, opt->block_index, opt->infname);
+		psmem_raw_write(&output, base_mem, opt->block_index, opt->infname);
+		break;
+	case ACT_READ:
+		psmem_raw_read(&output, base_mem, opt->block_index);
 		break;
 	case ACT_SWAP:
 		psmem_swap(&output, base_mem, opt->block_index, opt->dest_index);
@@ -47,15 +56,16 @@ int operate(struct Options_ *opt)
 	case ACT_TITLE:
 		psmem_title(&output, base_mem, opt->block_index, opt->title);
 		break;
-	case ACT_DELETE:
+	case ACT_NAME:
+		psmem_name(base_mem, opt->block_index);
+		output.mem = NULL;
+		break;
+	case ACT_ERASE:
 		psmem_delete(&output, base_mem, opt->block_index);
 		break;
 	case ACT_PRINT:
 		psmem_print(base_mem);
 		output.mem = NULL;
-		break;
-	case ACT_EXTRACT:
-		psmem_extract(&output, base_mem, opt->block_index);
 		break;
 	default:
 		output.mem = NULL;

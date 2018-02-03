@@ -12,10 +12,6 @@
 #define SIZE_MCB_MAX (SIZE_MCB_HEAD + SIZE_BLOCK * NUM_DATABLOCK)
 
 
-int mcb_read_file(const char *mcbfname, void *mem);
-
-void *mcb_get_data(const void *mcb);
-
 #endif
 
 
