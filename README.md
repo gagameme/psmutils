@@ -16,6 +16,25 @@ PS1メモリーカード用**コマンドライン**ツール
   * `cat writemc.ps | ./mcactl -w`
 
 
+## mcadev
+ps1用メモリーカード用デバイスドライバ
+* Ubuntu 16.04 でビルド、動作確認
+
+### 依存
+無し
+
+### 使い方
+* インストール
+  * `sudo insmod mcaps1m.ko`
+* アンインストール
+  * `sudo rmmod mcaps1m`
+
+* 読み込み  (メモリーカードの内容をそのままファイルに出力する)
+  * `cat /dev/mcaps1m > read_data.ps`
+* 書き込み  (ファイルの内容をそのままメモリーカードに書き込む)
+  * `cat write_data.ps > /dev/mcaps1m`
+
+
 ## pksccc
 ポケットステーション用クロスコンパイラとしてgccをビルドするためのMakefile等<br>
 (まだ役に立たないかも)<br>
